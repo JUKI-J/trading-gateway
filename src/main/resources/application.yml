@@ -5,48 +5,9 @@ spring:
   application:
     name: TRADING-GATEWAY
   cloud:
-    gateway:
-      routes:
-        - id: TRADING-CONFIG-SERVER
-          uri: lb://TRADING-CONFIG-SERVER
-          predicates:
-            - Path=/config/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: trading-config-server
-                fallbackuri: forward:/fallback/tradingConfigServerFallBack
-      httpclient:
-        connect-timeout: 3000
-        response-timeout: 3000ms
+    config:
+      profile: local
+      name: gateway,eureka-client
   config:
-    import: optional:configserver:lb://TRADING-CONFIG-SERVER
-
-#resilience4j
-resilience4j:
-  circuitbreaker:
-    configs:
-      default:
-        #Circuit? ???? ?(??) Ring Buffer ???, ???? 100
-        ringBufferSizeInClosedState: 10
-        #half-open ??? ? RingBuffer ??? ???? 10
-        ringBufferSizeInHalfOpenState: 30
-        #half closed?? circuitBreaker? open ?? ?? ???? ??
-        waitDurationInOpenState: 10000ms
-        #Circuit ?? ?? ???? ?? threshold ?????
-        failureRateThreshold: 20
-        #Actuator? ?? circuitBreaker ??? ???? ?? ??
-        registerHealthIndicator: true
-
-management:
-  endpoint:
-    web:
-      exposure:
-        include: "*"
-    shutdown:
-      enabled: true
-    health:
-      show-details: always
-  health:
-    circuitbreakers:
-      enabled: true
+    import:
+      - optional:configserver:https://setlog.net/trading-config-server/
