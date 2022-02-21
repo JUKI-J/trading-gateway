@@ -22,4 +22,9 @@ public class FallBackMethodController {
     public String commonServiceFallBack() {
         return "COMMON SERVER is taking longer than Expected. Please try again later";
     }
+
+    @GetMapping("/pushServiceFallBack")
+    public String pushServiceFallBack() {
+        return "PUSH SERVER is taking longer than Expected. Please try again later";
+    }
 }
